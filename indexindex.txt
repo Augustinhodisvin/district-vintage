@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>District Vintage | Catálogo</title>
+  <style>
+    :root {
+      /* Paleta extraída do banner oficial District Vintage */
+      --bg: #f3f2ee;          /* off-white areia */
+      --text: #1a1a18;        /* preto quente */
+      --muted: #6f6f6a;       /* cinza orgânico */
+      --accent: #3a3f2b;      /* verde oliva escuro */
+      --accent-soft: #d9d6cc; /* bege vintage */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 32px 24px;
+      border-bottom: 1px solid var(--accent-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: var(--bg);
+    }
+
+    header img {
+      max-width: 220px;
+    }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .banner {
+      width: 100%;
+      height: auto;
+      padding: 0;
+    }
+
+    .banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .banner-content {
+      max-width: 520px;
+    }
+
+    .banner h1 {
+      font-size: 48px;
+      line-height: 1.05;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .banner p {
+      font-size: 16px;
+      color: #cfcbbf;
+      margin-bottom: 24px;
+    }
+
+    .banner a {
+      display: inline-block;
+      padding: 10px 22px;
+      font-size: 13px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--text);
+      background: #c8bba3;
+    }
+
+    .container {
+      padding: 64px 24px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--bg);
+      padding: 16px;
+      border: 1px solid var(--accent-soft);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      background: #ddd;
+    }
+
+    .card h3 {
+      font-size: 16px;
+      margin: 12px 0 4px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .whatsapp {
+      margin-top: 12px;
+      display: inline-block;
+      font-size: 13px;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--accent);
+    }
+
+    footer {
+      padding: 32px 24px;
+      border-top: 1px solid #ddd;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <!-- Substitua pelo logo oficial -->
+    <img src="images/capalogo" alt="District Vintage" />
+
+    <nav>
+      <a href="#catalogo">Catálogo</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <!-- Banner principal -->
+  <section class="banner">
+    <img src="images/banner.jpg" alt="District Vintage Banner" />
+  </section>
+
+  <!-- Catálogo -->
+  <section id="catalogo" class="container">
+    <h2 class="section-title">Catálogo</h2>
+
+    <div class="grid">
+      <!-- Produto -->
+      <div class="card">
+        <img src="images/produto-3.jpg" alt="Produto" />
+        <h3>Camiseta Vintage</h3>
+        <p>Algodão premium • Corte reto</p>
+        <a class="whatsapp" href="#">Ver no WhatsApp</a>
+      </div>
+
+      <div class="card">
+        <img src="images/produto-4.jpg" alt="Produto" />
+        <h3>Camisa Clássica</h3>
+        <p>Textura encorpada • Design atemporal</p>
+        <a class="whatsapp" href="#">Ver no WhatsApp</a>
+      </div>
+
+      <div class="card">
+        <img src="images/produto-5.jpg" alt="Produto" />
+        <h3>Jaqueta Utility</h3>
+        <p>Estética vintage • Funcional</p>
+        <a class="whatsapp" href="#">Ver no WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+ <div class="card">
+        <img src="images/produto-6.jpg" alt="Produto" />
+        <h4>Jaqueta Utility</h3>
+        <p>Estética vintage • Funcional</p>
+        <a class="whatsapp" href="#">Ver no WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+ <div class="card">
+        <img src="images/produto-7.jpg" alt="Produto" />
+        <h3>Jaqueta Utility</h3>
+        <p>Estética vintage • Funcional</p>
+        <a class="whatsapp" href="#">Ver no WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+ <div class="card">
+        <img src="images/produto-8.jpg" alt="Produto" />
+        <h3>Jaqueta Utility</h3>
+        <p>Estética vintage • Funcional</p>
+        <a class="whatsapp" href="#">Ver no WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+ <div class="card">
+        <img src="images/produto-9.jpg" alt="Produto" />
+        <h3>Jaqueta Utility</h3>
+        <p>Estética vintage • Funcional</p>
+        <a class="whatsapp" href="#">Ver no WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+ <div class="card">
+        <img src="images/produto-10.jpg" alt="Produto" />
+        <h3>Jaqueta Utility</h3>
+        <p>Estética vintage • Funcional</p>
+        <a class="whatsapp" href="#">Ver no WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sobre -->
+  <section id="sobre" class="container">
+    <h2 class="section-title">Sobre a District</h2>
+    <p>
+      A District Vintage nasce da valorização do tempo, do design honesto e da estética masculina essencial. Cada peça carrega identidade, durabilidade e propósito.
+    </p>
+  </section>
+
+  <!-- Contato -->
+  <section id="contato" class="container">
+    <h2 class="section-title">Contato</h2>
+    <p>Atendimento direto via WhatsApp.</p>
+  </section>
+
+  <footer>
+    © District Vintage — Todos os direitos reservados
+  </footer>
+
+</body>
+</html>

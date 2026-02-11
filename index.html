@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DISTRICT VINTAGE</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;font-family:Inter;background:#f3f2ee;color:#1a1a18}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px;background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:10}
+.logo-area{display:flex;align-items:center;gap:12px}
+.logo{height:38px}
+header h1{font-family:Playfair Display;letter-spacing:3px;font-size:20px}
+.cart-icon{cursor:pointer}
+
+.banner{position:relative;overflow:hidden}
+.banner img{width:100%;display:none}
+.banner img.active{display:block}
+.banner button{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.6);color:#fff;border:none;width:54px;height:54px;border-radius:50%;font-size:30px;cursor:pointer}
+.banner .prev{left:30px}
+.banner .next{right:30px}
+
+.categories{display:flex;justify-content:center;gap:40px;margin:45px 0}
+.categories button{background:none;border:none;font-size:15px;cursor:pointer;color:#6b6b66;padding-bottom:6px}
+.categories button.active{color:#1a1a18;border-bottom:2px solid #1a1a18}
+
+.container{max-width:1200px;margin:auto;padding:0 20px 70px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
+.card{background:#fff;padding:15px;border:1px solid #ddd;cursor:pointer}
+.card img{width:100%;height:300px;object-fit:cover}
+.price{font-weight:bold}
+
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:100}
+.modal.active{display:flex}
+.modal-content{background:#fff;max-width:900px;width:90%;display:grid;grid-template-columns:1fr 1fr;gap:30px;padding:25px;position:relative}
+.modal-content img{width:100%;height:450px;object-fit:cover}
+.close-modal{position:absolute;top:10px;right:15px;font-size:24px;cursor:pointer}
+.add-cart-btn{margin-top:20px;width:100%;padding:14px;background:#1a1a18;color:#fff;border:none;font-size:15px;cursor:pointer}
+
+.cart{position:fixed;top:0;right:-420px;width:380px;height:100%;background:#fff;padding:20px;transition:.4s;z-index:99;overflow:auto}
+.cart.active{right:0}
+.cart-header{display:flex;justify-content:space-between;align-items:center}
+.close-cart{cursor:pointer;font-size:22px}
+
+.cart-item{display:flex;justify-content:space-between;gap:10px;margin-bottom:10px;border-bottom:1px solid #eee;padding-bottom:8px}
+.remove{cursor:pointer;color:#999}
+
+.coupon-box{display:flex;gap:8px;margin:15px 0}
+.coupon-box input{flex:1;padding:10px;border:1px solid #ccc}
+.coupon-box button{padding:10px;background:#1a1a18;color:#fff;border:none;cursor:pointer}
+
+.cart-summary div{display:flex;justify-content:space-between;margin:6px 0}
+.cart-btn{background:#25d366;color:#fff;border:none;padding:14px;width:100%;cursor:pointer;margin-top:15px}
+
+.notice{font-size:12px;color:#555;margin-top:10px}
+
+/* FOOTER */
+footer{background:#1a1a18;color:#fff;padding:40px 20px}
+.footer-grid{max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:30px}
+footer h3{font-family:Playfair Display;font-size:16px}
+footer p,footer a{font-size:14px;color:#e6e2d8;text-decoration:none}
+.copy{text-align:center;margin-top:30px;font-size:13px;color:#bfbfbf}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo-area">
+    <img src="images/capalogo.jpg" class="logo">
+    <h1>DISTRICT VINTAGE</h1>
+  </div>
+  <div class="cart-icon" id="cartIcon">🛒 (<span id="cart-count">0</span>)</div>
+</header>
+
+<section class="banner">
+  <img src="images/banner.jpg" class="active">
+  <img src="images/banner2.jpg">
+  <img src="images/banner3.jpg">
+  <img src="images/banner4.jpg">
+  <img src="images/banner5.jpg">
+  <button class="prev">❮</button>
+  <button class="next">❯</button>
+</section>
+
+<div class="categories">
+  <button class="active" data-cat="Todos">Todos</button>
+  <button data-cat="Academia">Moda Academia</button>
+  <button data-cat="Clean">Moda Clean</button>
+</div>
+
+<section class="container">
+  <div class="grid" id="catalogo"></div>
+</section>
+
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <span class="close-modal" id="closeModal">✕</span>
+    <img id="modal-img">
+    <div>
+      <h2 id="modal-name"></h2>
+      <div class="price" id="modal-price"></div>
+      <button class="add-cart-btn" id="addCartBtn">Adicionar ao carrinho</button>
+    </div>
+  </div>
+</div>
+
+<div class="cart" id="cart">
+  <div class="cart-header">
+    <h2>Carrinho</h2>
+    <span class="close-cart" id="closeCart">✕</span>
+  </div>
+
+  <div class="coupon-box">
+    <input id="coupon" placeholder="Cupom de desconto">
+    <button id="applyCoupon">Aplicar</button>
+  </div>
+
+  <div id="cart-items"></div>
+<div style="margin:15px 0">
+  <label>
+    <input type="radio" name="pagamento" value="pix" checked>
+    PIX (sem taxa)
+  </label>
+  <br>
+  <label>
+    <input type="radio" name="pagamento" value="cartao">
+    Cartão (5% taxa)
+<div id="parcelamento-box" style="display:none; margin-top:8px;">
+  <label>Parcelar em:</label>
+  <select id="parcelas">
+    <option value="1">1x</option>
+    <option value="2">2x</option>
+    <option value="3">3x</option>
+    <option value="4">4x</option>
+    <option value="5">5x</option>
+    <option value="6">6x</option>
+  </select>
+</div>
+  </label>
+</div>
+
+  <div class="cart-summary">
+    <div><span>Subtotal</span><span id="subtotal">R$0</span></div>
+    <div><span>Taxa cartão</span><span id="taxa">R$0</span></div>
+    <div><strong>Total</strong><strong id="cart-total">R$0</strong></div>
+  </div>
+
+  <p class="notice">⚠️ Compras no cartão podem ter acréscimo de taxas.</p>
+  <p class="notice">⚠️ Valores sujeitos a alteração na finalização da compra.</p>
+
+  <button class="cart-btn" id="checkout">Finalizar no WhatsApp</button>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h3>Instagram</h3>
+      <a href="https://instagram.com/districtvintage" target="_blank">@district.vintage_</a>
+    </div>
+    <div>
+      <h3>Contato</h3>
+      <p>📞 (84) 99831-1980</p>
+      <p>✉️ contato@districtvintage.com.br</p>
+    </div>
+    <div>
+      <h3>Localização</h3>
+      <p>Alagoa Nova/PB – Brasil</p>
+    </div>
+  </div>
+  <div class="copy">© 2026 District Vintage. Todos os direitos reservados.</div>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+const banners=document.querySelectorAll(".banner img");
+let b=0;
+document.querySelector(".next").onclick=()=>swap(1);
+document.querySelector(".prev").onclick=()=>swap(-1);
+function swap(s){
+banners[b].classList.remove("active");
+b=(b+s+banners.length)%banners.length;
+banners[b].classList.add("active");
+}
+
+const products=[
+ { name:"CALÇA SUPLEX ALTA COMPRESSÃO", price:80, image:"images/produto-1.jpg", category:"Academia" },
+  { name:"SHORT MASC. EM POLIAMIDA", price:50, image:"images/produto-2.jpg", category:"Academia" },
+  { name:"CAMISA MASC.", price:65, image:"images/produto-3.jpg", category:"Academia" },
+  { name:"CAMISA UV", price:60, image:"images/produto-4.jpg", category:"Academia" },
+  { name:"CAMISA MASC.", price:65, image:"images/produto-5.jpg", category:"Academia" },
+  { name:"CAMISA MASC.", price:64, image:"images/produto-6.jpg", category:"Academia" },
+  { name:"CAMISA MASC.", price:64, image:"images/produto-7.jpg", category:"Academia" },
+  { name:"SLIM BÁSICA", price:70, image:"images/produto-8.jpg", category:"Clean" },
+  { name:"SLIM BÁSICA", price:70, image:"images/produto-9.jpg", category:"Clean" },
+  { name:"BÁSICA TOSCANA", price:80, image:"images/produto-10.jpg", category:"Clean" },
+  { name:"BÁSICA TOSCANA", price:80, image:"images/produto-11.jpg", category:"Clean" },
+  { name:"CAMISA 3 PUNHOS COM APLIQUE", price:72, image:"images/produto-112.jpg", category:"Clean" },
+  { name:"CAMISA REPPORT", price:65, image:"images/produto-12.jpg", category:"Clean" },
+  { name:"REGATA AMERICANA", price:40, image:"images/produto-13.jpg", category:"Clean" },
+  { name:"REGATA AMERICANA", price:40, image:"images/produto-14.jpg", category:"Clean" },
+  { name:"CAMISA CANELADA", price:40, image:"images/produto-15.jpg", category:"Clean" },
+  { name:"CAMISA CANELADA", price:40, image:"images/produto-16.jpg", category:"Clean" },
+  { name:"CAMISA GOLA POLO V TEXTURIZADA", price:65, image:"images/produto-17.jpg", category:"Clean" },
+  { name:"CAMISA GOLA POLO V TEXTURIZADA", price:65, image:"images/produto-18.jpg", category:"Clean" },
+  { name:"SHORT MASC. ALFAIATARIA", price:60, image:"images/produto-19.jpg", category:"Clean" },
+  { name:"SHORT MASC. ALFAIATARIA", price:60, image:"images/produto-20.jpg", category:"Clean" },
+  { name:"CAMISA TEXTURIZADA VERMELHA", price:60, image:"images/produto-21.jpg", category:"Clean" },
+  { name:"CAMISA TEXTURIZADA BEGE", price:60, image:"images/produto-22.jpg", category:"Clean" },
+  { name:"CAMISA TEXTURIZADA MARINHO", price:60, image:"images/produto-23.jpg", category:"Clean" },
+  { name:"CAMISA TEXTURIZADA MARROM CLARO", price:60, image:"images/produto-24.jpg", category:"Clean" },
+  { name:"CAMISA OVERSIZED MARINHO", price:60, image:"images/produto-25.jpg", category:"Clean" },
+  { name:"CAMISA CUBANA BRIZA C/BOTÕES", price:100, image:"images/produto-26.jpg", category:"Clean" }
+];const catalogo=document.getElementById("catalogo");
+const modal=document.getElementById("modal");
+let modalProduct=null;
+
+function render(cat="Todos"){
+catalogo.innerHTML="";
+products.filter(p=>cat==="Todos"||p.category===cat).forEach(p=>{
+const d=document.createElement("div");
+d.className="card";
+d.innerHTML=`<img src="${p.image}"><h3>${p.name}</h3><div class="price">R$ ${p.price}</div>`;
+d.onclick=()=>openModal(p);
+catalogo.appendChild(d);
+});
+}
+render();
+
+document.querySelectorAll(".categories button").forEach(btn=>{
+btn.onclick=()=>{
+document.querySelectorAll(".categories button").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+render(btn.dataset.cat);
+};
+});
+
+function openModal(p){
+modalProduct=p;
+modal.classList.add("active");
+modal.querySelector("#modal-img").src=p.image;
+modal.querySelector("#modal-name").innerText=p.name;
+modal.querySelector("#modal-price").innerText="R$ "+p.price;
+}
+document.getElementById("closeModal").onclick=()=>modal.classList.remove("active");
+
+let cart=[];
+let desconto = 0;
+document.getElementById("applyCoupon").onclick=function(){
+
+const codigo=document.getElementById("coupon").value.trim().toUpperCase();
+
+if(codigo==="DISTRICT10"){
+desconto=0.10;
+}
+else if(codigo==="VIP20"){
+desconto=0.20;
+}
+else{
+desconto=0;
+alert("Cupom inválido");
+}
+
+renderCart();
+};
+const cartEl=document.getElementById("cart");
+document.getElementById("cartIcon").onclick=()=>cartEl.classList.add("active");
+document.getElementById("closeCart").onclick=()=>cartEl.classList.remove("active");
+
+document.getElementById("addCartBtn").onclick=()=>{
+cart.push(modalProduct);
+modal.classList.remove("active");
+cartEl.classList.add("active");
+renderCart();
+};
+
+function renderCart(){
+const area=document.getElementById("cart-items");
+area.innerHTML="";
+let subtotal=0;
+
+cart.forEach((p,i)=>{
+subtotal+=p.price;
+area.innerHTML+=`
+<div class="cart-item">
+<span>${p.name} – R$ ${p.price}</span>
+<span class="remove" onclick="removeItem(${i})">✕</span>
+</div>`;
+});
+
+let valorDesconto = subtotal * desconto;
+let subtotalComDesconto = subtotal - valorDesconto;
+
+let taxa = 0;
+let totalFinal = subtotalComDesconto;
+
+const metodo = document.querySelector('input[name="pagamento"]:checked').value;
+
+if(metodo==="cartao"){
+taxa = subtotalComDesconto * 0.05;
+totalFinal = subtotalComDesconto + taxa;
+}
+
+document.getElementById("subtotal").innerText="R$ "+subtotal.toFixed(2);
+document.getElementById("taxa").innerText="R$ "+taxa.toFixed(2);
+document.getElementById("cart-count").innerText=cart.length;
+
+if(metodo==="cartao"){
+const qtdParcelas = parseInt(document.getElementById("parcelas").value);
+const valorParcela = totalFinal / qtdParcelas;
+
+document.getElementById("cart-total").innerText =
+"R$ "+totalFinal.toFixed(2)+" ("+qtdParcelas+"x de R$ "+valorParcela.toFixed(2)+")";
+}else{
+document.getElementById("cart-total").innerText="R$ "+totalFinal.toFixed(2);
+}
+}
+
+document.querySelectorAll('input[name="pagamento"]').forEach(r=>{
+r.addEventListener("change",()=>{
+const parcelamentoBox = document.getElementById("parcelamento-box");
+
+if(document.querySelector('input[name="pagamento"]:checked').value==="cartao"){
+parcelamentoBox.style.display="block";
+}else{
+parcelamentoBox.style.display="none";
+}
+
+renderCart();
+});
+});
+document.getElementById("parcelas").addEventListener("change",renderCart);
+
+window.removeItem=function(i){
+cart.splice(i,1);
+renderCart();
+};
+
+document.getElementById("checkout").onclick=()=>{
+let msg="Olá! Quero finalizar a compra:%0A";
+cart.forEach(p=>msg+=`• ${p.name} - R$ ${p.price}%0A`);
+window.open("https://wa.me/5584998311980?text="+msg);
+};
+});
+</script>
+
+</body>
+</html>
