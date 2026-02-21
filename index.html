@@ -130,7 +130,7 @@ footer p,footer a{font-size:14px;color:#e6e2d8;text-decoration:none}
     Cartão (5% taxa)
 <div id="parcelamento-box" style="display:none; margin-top:8px;">
   <label>Parcelar em:</label>
-  <div class="total" id="cart-total">Total: R$0</div>
+  <select id="parcelas">
     <option value="1">1x</option>
     <option value="2">2x</option>
     <option value="3">3x</option>
@@ -149,6 +149,7 @@ footer p,footer a{font-size:14px;color:#e6e2d8;text-decoration:none}
   </div>
 
   <p class="notice">⚠️ Compras no cartão podem ter acréscimo de taxas.</p>
+  <p class="notice">⚠️ É de suma importancia que o site pode não calcular corretamente o valor.</p>
   <p class="notice">⚠️ Valores sujeitos a alteração na finalização da compra.</p>
 
   <button class="cart-btn" id="checkout">Finalizar no WhatsApp</button>
@@ -163,7 +164,7 @@ footer p,footer a{font-size:14px;color:#e6e2d8;text-decoration:none}
     <div>
       <h3>Contato</h3>
       <p>📞 (84) 99831-1980</p>
-      <p>✉️ contato@districtvintage.com.br</p>
+      <p>✉️ ecommerce.district.vintage@gmail.com</p>
     </div>
     <div>
       <h3>Localização</h3>
@@ -259,14 +260,6 @@ desconto=0.10;
 else if(codigo==="VIP20"){
 desconto=0.20;
 }
-  const taxasParcelamento = {
-1:3.15,
-2:5.39,
-3:6.12,
-4:6.85,
-5:7.52,
-6:8.28
-};
 else{
 desconto=0;
 alert("Cupom inválido");
@@ -303,22 +296,26 @@ let valorDesconto = subtotal * desconto;
 let subtotalComDesconto = subtotal - valorDesconto;
 
 let taxa = 0;
-let base=total-(total*discount);
-
-let parcelas=document.getElementById("parcelas");
-let taxa=0;
-
-if(parcelas){
-taxa=taxasParcelamento[parcelas.value]||0;
-}
-
-let final=base+(base*taxa);
+let totalFinal = subtotalComDesconto;
 
 const metodo = document.querySelector('input[name="pagamento"]:checked').value;
 
 if(metodo==="cartao"){
-taxa = subtotalComDesconto * 0.05;
-totalFinal = subtotalComDesconto + taxa;
+
+const taxasParcelamento={
+1:0.0315,
+2:0.0539,
+3:0.0612,
+4:0.0685,
+5:0.0757,
+6:0.0828
+};
+
+const qtdParcelas=parseInt(document.getElementById("parcelas").value);
+
+taxa=subtotalComDesconto*(taxasParcelamento[qtdParcelas]||0);
+
+totalFinal=subtotalComDesconto+taxa;
 }
 
 document.getElementById("subtotal").innerText="R$ "+subtotal.toFixed(2);
@@ -357,17 +354,7 @@ renderCart();
 };
 
 document.getElementById("checkout").onclick=()=>{
-let base=total-(total*discount);
-
-let parcelas=document.getElementById("parcelas");
-let taxa=0;
-
-if(parcelas){
-taxa=taxasParcelamento[parcelas.value]||0;
-}
-
-let final=base+(base*taxa);
- msg="Olá! Quero finalizar a compra:%0A";
+let msg="Olá! Quero finalizar a compra:%0A";
 cart.forEach(p=>msg+=`• ${p.name} - R$ ${p.price}%0A`);
 window.open("https://wa.me/5584998311980?text="+msg);
 };
